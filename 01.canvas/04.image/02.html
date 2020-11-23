@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas</title>
+    <style>
+        .canvas {
+            background-color: #eee;
+            /* margin-top: 300px; */
+        }
+
+        .color-btn {
+            width: 30px;
+            height: 30px;
+            border: 0;
+            border-radius: 50%;
+        }
+
+        .color-btn[data-color='black'] {background: black;}
+        .color-btn[data-color='red'] {background: red;}
+        .color-btn[data-color='green'] {background: green;}
+        .color-btn[data-color='blue'] {background: blue;}
+        .color-btn[data-color='yellow'] {background: yellow;}
+        .image-btn {
+            width: 40px;
+            height: 40px;
+            background: url(../images/ilbuni2.png)
+                        no-repeat 50% 50% / cover;
+        }
+        .brush-btn {
+            width: 100px;
+            height: 30px;
+            border: 0;
+        }
+        .brush-btn[data-type='full']{}
+        .brush-btn[data-type='stroke']{}
+        .result-image {
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Image</h1>
+    <canvas class="canvas" width="600" height="400"></canvas>  
+    <div class="control">
+        <button class="color-btn" data-type="color" data-color="black"></button>
+        <button class="color-btn" data-type="color" data-color="red"></button>
+        <button class="color-btn" data-type="color" data-color="green"></button>
+        <button class="color-btn" data-type="color" data-color="blue"></button>
+        <button class="color-btn" data-type="color" data-color="yellow"></button>
+        <button class="image-btn" data-type="image"></button>
+    </div> 
+    <div class="brush">
+        <button class="brush-btn" data-shape="empty">빈동그라미</button>
+        <button class="brush-btn" data-shape="full">꽉찬동그라미</button>
+    </div>
+    <button class="save-btn">이미지 저장</button>
+
+    
+    <div class="result-image"></div>
+
+    <script>
+        const canvas = document.querySelector('.canvas');
+        const context = canvas.getContext('2d');
+        const control = document.querySelector('.control');
+        const saveBtn = document.querySelector('.save-btn');
+        const resultImage = document.querySelector('.result-image');
+        const brushBtn = document.querySelector('.brush');
+
+        let drawingMode = false; // true 일 때만 그림을 그리도록
+        let colorVal = 'black'; // 색상
+        let brush = 'color'; // 'color' or 'image', default = 'color'
+        let shape = 'full'; // 'empty' or 'full', default = 'full'
+
+        const imgElem = new Image();
+        imgElem.src = '../images/ilbuni2.png';
+
+        // 그리기
+        function moveHandler(event){
+            if(!drawingMode) return;
+            console.log(colorVal, brush, shape);
+            switch (brush) {
+                case 'color':
+                    context.beginPath();
+                    context.arc(event.clientX-7,event.layerY-80,10,0,Math.PI*2,false);
+                    if(shape=="full"){
+                        context.fill();
+                    } else {
+                        context.stroke();
+                    }
+                    break;
+                case 'image':
+                    context.beginPath();
+                    context.drawImage(imgElem,event.clientX-7,event.layerY-80,50,50);
+                    break;
+            }
+        }
+
+        // 마우스를 누르고 있을 때
+        function downHanler(){
+            drawingMode = true;
+        }
+
+        // 마우스를 뗐을 때
+        function upHandler(){
+            drawingMode = false;
+        }
+
+        // 색 설정
+        function setColor(event){
+            brush = event.target.getAttribute('data-type');
+            colorVal = event.target.getAttribute('data-color');
+            console.log(event.target.getAttribute('data-color') ,event.target.getAttribute('data-type'));
+            context.fillStyle = colorVal;
+        }
+
+        function setBrush(event){
+            shape = event.target.getAttribute('data-shape');
+            context.fillStyle = colorVal;
+            console.log(shape, colorVal);
+        }
+
+        // 그린 그림을 저장
+        function createImage(){
+            const url = canvas.toDataURL('image/png');
+            console.log(url);
+            const imgElem = new Image();
+            imgElem.src = url;
+            resultImage.appendChild(imgElem);
+        }
+        
+        // canvas.addEventListener('click', clickHandler);
+        canvas.addEventListener('mousemove', moveHandler);
+        canvas.addEventListener('mousedown', downHanler);
+        canvas.addEventListener('mouseup', upHandler);
+        control.addEventListener('click', setColor);
+        saveBtn.addEventListener('click', createImage);
+        brushBtn.addEventListener('click', setBrush);
+    </script>
+    
+</body>
+</html>

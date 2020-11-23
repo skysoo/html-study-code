@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Canvas</title>
+        <style>
+            .canvas {
+                background-color: #eee;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>requestAnimationFrame</h1>
+        <canvas class="canvas" width="500" height="300"></canvas>
+
+        <script>
+            const canvas = document.querySelector('.canvas');
+            const context = canvas.getContext('2d');
+
+            let xPos = 50;
+            let yPos = 25;
+            let count = 0;
+
+            function draw() {
+                if(count%10==0&&xPos<canvas.width){
+                    context.clearRect(0,0,canvas.width, canvas.height);
+                    context.beginPath();
+                    context.arc(xPos,150+yPos,10,0, Math.PI*2, false);
+                    context.fill();
+                    xPos += 30;
+                    yPos *= -1;
+                }
+                count++;
+                requestAnimationFrame(draw);
+            }
+            draw();
+            // setInterval(draw,100);
+        </script>
+    </body>
+</html>

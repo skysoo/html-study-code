@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas</title>
+    <style>
+        .canvas {
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image</h1>
+    <canvas class="canvas" width="600" height="400"></canvas>   
+    <script>
+        const canvas = document.querySelector('.canvas');
+        const context = canvas.getContext('2d');
+
+        // const imgElem = document.createElement('img');
+        const imgElem = new Image();
+        // imgElem.src = 'D:\\4.DOC/1.PRIVATE/1.NAVER_SYNC/NaverCloud/PSS/2.personal/2.Frontend/01.canvas/images/ilbuni1.png';
+        imgElem.src = '../images/ilbuni1.png'        
+        console.log(imgElem);
+        imgElem.addEventListener('load', ()=>{
+            context.drawImage(imgElem, 50, 50); // 이미지 그리는 위치
+            context.drawImage(imgElem, 50,50,70, 120); // 이미지 그리는 위치, 크리
+            context.drawImage(imgElem, 80, 10, 200,170, 400,250,100,100); // 원본 이미지의 특정 부분을 crop해서 사용할 때
+        });
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Canvas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body {
+        margin: 0;
+      }
+      /* 이렇게 css에서도 크기 값을 줄 수 있다. 우선 적용 
+      단, 아래 script에서 크기를 적용한 값이 화면에 반영이 안되는 것은 아니다.
+      
+      그렇다면 왜 굳이 script로 크기를 지정하면 되는데, css에서 크기를 지정하나?
+
+      고해상도로 표현하기 위해서 아래와 같은 방식을 많이 쓴다.
+      1. script 에서 실제 표현할 크기의 두배로 크기 지정
+      2. css 에서 실제 크기로 압축해서 크기 지정
+
+      그러나 위의 방식은 픽셀 수가 많아지고 성능상의 이슈가 발생할 수 있다.
+      */
+      .canvas {
+        width: 500px;
+        height: 300px;
+        background: #eee;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>캔버스 사이즈 설정</h1>
+    <canvas class="canvas" width="300" height="200"></canvas>
+    <canvas class="canvas canvas2" width="1000" height="500"></canvas>
+
+    <script>
+        const canvas = document.querySelector('.canvas');
+        const canvas2 = document.querySelector('.canvas2');
+        const context = canvas.getContext('2d');
+        const context2 = canvas2.getContext('2d');
+
+        context.arc(100,100,50,0,Math.PI*2, false);
+        context2.arc(100,100,50,0,Math.PI*2, false)
+        context.fill();
+        context2.fill();
+    </script>
+
+  </body>
+
+</html>
